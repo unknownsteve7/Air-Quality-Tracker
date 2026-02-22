@@ -2,7 +2,7 @@ pandas
 requests
 sqlalchemy
 pyarrow
-streamlit
+streamlit>=1.40.0
 plotly
 schedule
-altair
+altair<5
