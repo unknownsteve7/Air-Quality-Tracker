@@ -1,8 +1,19 @@
+import os
 import requests
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 cities = ['Delhi', 'Mumbai', 'Bangalore', 'Hyderabad', 'Chennai']
-API_KEY = "c1abcda61cc3e80dd2daab4791befa08"
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
+
+if not API_KEY:
+    try:
+        import streamlit as st
+        API_KEY = st.secrets["OPENWEATHER_API_KEY"]
+    except:
+        pass
 
 def fetch_data(city):
     api = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}"
