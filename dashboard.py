@@ -162,7 +162,8 @@ def main():
         st.plotly_chart(fig_aqi, use_container_width=True)
 
     st.markdown("---")
-    st.markdown(f"<div class='footer'>Dashboard last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>", unsafe_allow_html=True)
+    data_time = city_data['dt_x']
+    st.markdown(f"<div class='footer'>Data last captured by API: {data_time} | Dashboard View Refreshed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
