@@ -1,7 +1,7 @@
 import logging
 import sys
 from datetime import datetime
-from transform_data import combine_data
+from transform_data import combine_data, validate_data
 from database_manager import save_to_sqlite, save_to_parquet
 
 logging.basicConfig(
@@ -22,7 +22,12 @@ def run_pipeline():
         
         logger.info("Extracting and Transforming data (API calls)...")
         df = combine_data()
-        logger.info(f"Successfully processed data for {len(df)} cities.")
+        
+        logger.info("Performing Data Quality Checks...")
+        validate_data(df)
+        logger.info("Data Validation Passed!")
+
+        logger.info(f"Successfully processed and validated data for {len(df)} cities.")
 
         logger.info("Loading data into SQLite...")
         save_to_sqlite(df)

@@ -23,6 +23,30 @@ def categorize_aqi(aqi):
     else:
         return "Unknown"
 
+def validate_data(df):
+    """
+    Perform data quality checks on the combined dataframe.
+    Returns True if valid, raises ValueError if issues found.
+    """
+    if df.empty:
+        raise ValueError("Data Validation Failed: Dataframe is empty.")
+
+    essential_cols = ['city', 'main.temp', 'main.aqi']
+    for col in essential_cols:
+        if col not in df.columns:
+            raise ValueError(f"Data Validation Failed: Missing column {col}")
+        if df[col].isnull().any():
+            raise ValueError(f"Data Validation Failed: Null values found in {col}")
+
+    if not df['main.temp'].between(-50, 60).all():
+        invalid_temps = df[~df['main.temp'].between(-50, 60)]['main.temp'].tolist()
+        raise ValueError(f"Data Validation Failed: Unrealistic temperatures found: {invalid_temps}")
+
+    if not df['main.aqi'].between(1, 5).all():
+        raise ValueError("Data Validation Failed: AQI score out of range (1-5)")
+
+    return True
+
 def combine_data():
     pollution_results = []
     weather_results = []
